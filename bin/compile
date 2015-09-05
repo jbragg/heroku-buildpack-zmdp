@@ -22,10 +22,7 @@ install_cwd() {
     make -sj4 install
 }
 
-DEP_DIR="$BUILD_DIR/.zmdp/"
-mkdir $DEP_DIR
-cd $DEP_DIR
-
+cd /tmp
 FLEX_DIRNAME=flex-2.5.37
 FLEX_ARCHIVE_NAME=$FLEX_DIRNAME.tar.bz2
 
@@ -35,20 +32,7 @@ curl -L http://prdownloads.sourceforge.net/flex/$FLEX_ARCHIVE_NAME?download > $F
 tar -jxf $FLEX_ARCHIVE_NAME
 cd $FLEX_DIRNAME
 install_cwd
-cd $DEP_DIR
-
-echo 'Downloading and building GNU Bison'
-BISON_DIRNAME=bison-2.6
-BISON_ARCHIVE_NAME=$BISON_DIRNAME.tar.xz
-
-curl -LO http://ftp.gnu.org/gnu/bison/$BISON_ARCHIVE_NAME
-
-tar -Jxf $BISON_ARCHIVE_NAME
-cd $BISON_DIRNAME
-install_cwd
-cd $DEP_DIR
-
-
+export PATH="/app/vendor/bin":$PATH
 
 ### Then install zmdp.
 
