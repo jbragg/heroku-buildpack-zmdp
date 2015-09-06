@@ -47,3 +47,6 @@ fi
 # make
 echo "-----> Compiling with Make"
 make 2>&1 | indent
+
+$OS_NAME=$(ls $BUILD_DIR/zmdp/bin/ | head -1)
+export PATH=$PATH:"$BUILD_DIR/zmdp/bin/$OS_NAME"
