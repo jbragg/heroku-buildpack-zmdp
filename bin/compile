@@ -34,9 +34,18 @@ cd $FLEX_DIRNAME
 install_cwd
 export PATH="/app/vendor/bin":$PATH
 
-### Then install zmdp.
+### Then download and install zmdp.
 
-cd $BUILD_DIR/zmdp/src
+cd $BUILD_DIR
+if [[ ! -d .heroku/vendor ]]; then
+    mkdir -p .heroku/vendor
+fi
+cd .heroku/vendor
+if [[ -d zmdp ]]; then
+    rm -rf zmdp
+fi
+git clone https://github.com/uwcrowdlab/zmdp
+cd zmdp/src
 
 # configure
 if [ -f configure ]; then
@@ -48,5 +57,8 @@ fi
 echo "-----> Compiling with Make"
 make install 2>&1 | indent
 
-OS_NAME=$(ls $BUILD_DIR/zmdp/bin/ | head -1)
-export PATH=$PATH:"$BUILD_DIR/zmdp/bin/$OS_NAME"
+# Make profile.d directory.
+PROFILE_PATH="$BUILD_DIR/.profile.d/zmdp.sh"
+mkdir -p $(dirname $PROFILE_PATH)
+OS_NAME=$(ls $BUILD_DIR/.heroku/vendor/zmdp/bin/ | head -1)
+echo export PATH='$PATH':/app/.heroku/vendor/zmdp/bin/$OS_NAME >> $PROFILE_PATH
